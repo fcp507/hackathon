@@ -14,3 +14,6 @@
 2025-01-25 01:20:14.301 [info] ExtensionService#_doActivateExtension vscode.configuration-editing, startup: false, activationEvent: 'onLanguage:jsonc'
 2025-01-25 01:20:14.302 [info] ExtensionService#_doActivateExtension vscode.json-language-features, startup: false, activationEvent: 'onLanguage:jsonc'
 2025-01-25 01:20:14.302 [info] ExtensionService#_doActivateExtension vscode.typescript-language-features, startup: false, activationEvent: 'onLanguage:jsonc'
+2025-01-25 01:30:42.886 [info] Extension host terminating: renderer disconnected for too long (2)
+2025-01-25 01:30:42.887 [info] Lock '/home/cunping507/.codeoss/data/User/workspaceStorage/41a6c5bb/vscode.lock': Marking the lockfile as scheduled to be released in 6000 ms.
+2025-01-25 01:30:42.909 [info] Extension host with pid 1246 exiting with code 0

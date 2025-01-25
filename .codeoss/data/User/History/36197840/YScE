@@ -1,0 +1,97 @@
+from google.cloud import bigquery
+from vertexai.generative_models import FunctionDeclaration, GenerativeModel, Part, Tool
+from config import PROJECT_ID, BIGQUERY_DATASET_ID
+
+# Initialize the Gemini Thinking model
+sqlGeneratorModel = GenerativeModel(
+    'gemini-1.5-pro',
+    generation_config={"temperature": 0, "max_output_tokens": 2048},
+)
+
+# Initialize BigQuery client
+client = bigquery.Client(project=PROJECT_ID)
+
+# Define the database schema for player statistics
+nl2sql_prompt = """
+You are a BigQuery SQL guru working to analyze MLB player statistics. Your task is to write a BigQuery SQL query that answers the user's question based on the following database schema.
+<Guidelines>
+  - Join as minimal tables as possible.
+  - When joining tables ensure all join columns are the same data_type.
+  - Analyze the database and the table schema provided as parameters and understand the relations (column and table relations).
+  - Use always SAFE_CAST. If performing a SAFE_CAST, use only BigQuery supported datatypes.
+  - Always SAFE_CAST and then use aggregate functions
+  - Don't include any comments in code.
+  - Remove ```sql and ``` from the output and generate the SQL in single line.
+  - Tables should be referred to using a fully qualified name enclosed in ticks (`) e.g. `project_id.owner.table_name`.
+  - Use all the non-aggregated columns from the "SELECT" statement while framing "GROUP BY" block.
+  - Return syntactically and semantically correct SQL for BigQuery with proper relation mapping i.e. project_id, owner, table, and column relation.
+  - Use ONLY the column names mentioned in the Table Schema. DO NOT USE any other column names outside of this.
+  - Associate column names mentioned in the Table Schema only to the table_name specified under Table Schema.
+  - Use SQL 'AS' statement to assign a new name temporarily to a table column or even a table wherever needed.
+  - Table names are case sensitive. DO NOT uppercase or lowercase the table names.
+  - Always enclose subqueries and union queries in brackets.
+  - Refer to the examples provided below, if given.
+  - You always generate SELECT queries ONLY. If asked for other statements like DELETE or MERGE etc., respond with a dummy SQL statement.
+</Guidelines>
+
+**Database Schema:**
+
+**PlayerStats Table:**
+
+| Column Name     | Data Type | Description                          |
+|-----------------|-----------|--------------------------------------|
+| player_id       | STRING    | Unique identifier for the player     |
+| player_name     | STRING    | Name of the player                   |
+| team            | STRING    | Team the player belongs to           |
+| position        | STRING    | Player's position                    |
+| games_played    | INT64     | Number of games played               |
+| batting_average | FLOAT64   | Player's batting average             |
+| home_runs       | INT64     | Number of home runs                  |
+| rbis            | INT64     | Runs batted in                       |
+| stolen_bases    | INT64     | Number of stolen bases               |
+| era             | FLOAT64   | Earned run average (for pitchers)    |
+| strikeouts      | INT64     | Number of strikeouts (for pitchers)  |
+
+**Example Natural Language Question:**
+
+"What are the stats for player John Doe?"
+
+**Expected SQL Query:**
+
+SELECT player_id, player_name, team, position, games_played, batting_average, home_runs, rbis, stolen_bases, era, strikeouts
+FROM `my-vertexai-project-id.mlb_dataset.PlayerStats`
+WHERE player_name = 'John Doe';
+"""
+
+def query_player_stats(prompt):
+    user_question = prompt
+    revised_prompt = "Use these System Instructions: " + nl2sql_prompt + " to answer the provided Question: " + user_question
+    print(revised_prompt)
+
+    generated_query = sqlGeneratorModel.generate_content(revised_prompt)
+
+    print(generated_query.text)
+    job_config = bigquery.QueryJobConfig(maximum_bytes_billed=10**10)  # Adjust maximum bytes billed as needed
+    cleaned_query = (
+        generated_query.text
+        .replace("\\n", " ")
+        .replace("\n", "")
+        .replace("\\", "")
+        .replace("```sql", "")
+    )
+    print(cleaned_query)
+    query_job = client.query(cleaned_query, job_config=job_config)
+    api_response = query_job.result()
+    api_response = str([dict(row) for row in api_response])
+    api_response = api_response.replace("\\", "").replace("\n", "")
+    print(api_response)
+    return_prompt = f"""Generate a natural language response based on the original question: '{user_question}' and the returned results: '{api_response}'"""
+    response = sqlGeneratorModel.generate_content(return_prompt)
+    print(response.text)
+    return response.text
+
+# Example usage
+if __name__ == "__main__":
+    user_question = "What are the stats for player John Doe?"
+    response = query_player_stats(user_question)
+    print(response)

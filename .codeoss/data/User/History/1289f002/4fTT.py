@@ -1,0 +1,4 @@
+injuries_prompt = f"""
+
+
+"""

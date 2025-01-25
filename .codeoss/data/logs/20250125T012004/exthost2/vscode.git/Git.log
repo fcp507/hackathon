@@ -65,3 +65,43 @@ Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
 2025-01-25 01:26:30.950 [warning] [Git][getBranch] No such branch: main
 2025-01-25 01:26:30.964 [info] > git status -z -uall [8ms]
 2025-01-25 01:26:30.966 [info] > git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname) [3ms]
+2025-01-25 01:26:46.531 [info] > git add -A -- . [382ms]
+2025-01-25 01:26:46.548 [info] > git -c user.useConfigOnly=true commit --quiet [11ms]
+2025-01-25 01:26:46.548 [info] Author identity unknown
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: no email was given and auto-detection is disabled
+2025-01-25 01:26:46.556 [info] > git config --get-all user.name [1ms]
+2025-01-25 01:26:46.569 [info] [Git][getRemotes] No remotes found in the git config file
+2025-01-25 01:26:46.570 [info] > git config --get commit.template [8ms]
+2025-01-25 01:26:46.570 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [2ms]
+2025-01-25 01:26:46.570 [warning] [Git][getBranch] No such branch: main
+2025-01-25 01:26:46.585 [info] > git status -z -uall [9ms]
+2025-01-25 01:26:46.586 [info] > git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname) [3ms]
+2025-01-25 01:26:48.008 [info] > git ls-files --stage -- /home/cunping507/README-cloudshell.txt [2ms]
+2025-01-25 01:26:48.017 [info] > git cat-file -s 9fa5a74e750d98eb725eca4ca09ba01af2f5cd24 [1ms]
+2025-01-25 01:26:48.158 [info] > git show --textconv :README-cloudshell.txt [3ms]
+2025-01-25 01:26:57.712 [info] > git check-ignore -v -z --stdin [3ms]
+2025-01-25 01:27:00.237 [info] > git log --format=%H%n%aN%n%aE%n%at%n%ct%n%P%n%D%n%B -z --shortstat --diff-merges=first-parent -n50 --skip=0 --topo-order --decorate=full --stdin [2ms]
+2025-01-25 01:27:00.237 [info] fatal: bad revision 'refs/heads/main'
+2025-01-25 01:27:00.238 [error] [GitHistoryProvider][provideHistoryItems] Failed to get history items with options '{"historyItemRefs":["refs/heads/main"],"limit":50,"skip":0}': Failed to execute git {
+  "exitCode": 128,
+  "gitCommand": "log",
+  "stdout": "",
+  "stderr": "fatal: bad revision 'refs/heads/main'\n"
+}
+2025-01-25 01:28:14.702 [info] [Git][getRemotes] No remotes found in the git config file
+2025-01-25 01:28:14.703 [info] > git config --get commit.template [7ms]
+2025-01-25 01:28:14.704 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [2ms]
+2025-01-25 01:28:14.704 [warning] [Git][getBranch] No such branch: main
+2025-01-25 01:28:14.722 [info] > git status -z -uall [13ms]
+2025-01-25 01:28:14.723 [info] > git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname) [2ms]

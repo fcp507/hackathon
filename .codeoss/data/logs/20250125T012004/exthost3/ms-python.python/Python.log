@@ -1,0 +1,32 @@
+2025-01-25 02:03:37.075 [warning] Dir "/home/cunping507/.pixi/envs" is not watchable (directory does not exist)
+2025-01-25 02:03:37.075 [info] Starting Environment refresh
+2025-01-25 02:03:37.075 [info] Searching for interpreters in posix paths locator
+2025-01-25 02:03:37.075 [info] Searching for pyenv environments
+2025-01-25 02:03:37.075 [info] Searching for conda environments
+2025-01-25 02:03:37.075 [info] Searching for global virtual environments
+2025-01-25 02:03:37.075 [info] Searching for custom virtual environments
+2025-01-25 02:03:37.075 [info] pyenv is not installed
+2025-01-25 02:03:37.075 [info] Finished searching for pyenv environments: 21 milliseconds
+2025-01-25 02:03:37.075 [info] Finished searching for custom virtual envs: 19 milliseconds
+2025-01-25 02:03:37.075 [info] > conda info --json
+2025-01-25 02:03:37.075 [info] > hatch env show --json
+2025-01-25 02:03:37.075 [info] cwd: .
+2025-01-25 02:03:37.075 [info] > pyenv which python
+2025-01-25 02:03:37.075 [info] cwd: .
+2025-01-25 02:03:37.075 [info] Finished searching for global virtual envs: 49 milliseconds
+2025-01-25 02:03:37.077 [info] Found: /bin/python --> /bin/python3.12
+2025-01-25 02:03:37.079 [info] Found: /bin/python3 --> /bin/python3.12
+2025-01-25 02:03:37.079 [info] Found: /bin/python3.12 --> /bin/python3.12
+2025-01-25 02:03:37.094 [info] Found: /usr/bin/python --> /usr/bin/python3.12
+2025-01-25 02:03:37.094 [info] Found: /usr/bin/python3 --> /usr/bin/python3.12
+2025-01-25 02:03:37.094 [info] Found: /usr/bin/python3.12 --> /usr/bin/python3.12
+2025-01-25 02:03:37.130 [info] Finished searching for interpreters in posix paths locator: 113 milliseconds
+2025-01-25 02:03:37.130 [info] > /bin/python -I /google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/get_output_via_markers.py /google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/interpreterInfo.py
+2025-01-25 02:03:37.150 [info] > /usr/bin/python -I /google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/get_output_via_markers.py /google/devshell/editor/code-oss-for-cloud-shell/extensions/ms-python.python/python_files/interpreterInfo.py
+2025-01-25 02:03:37.150 [info] Environments refresh paths discovered (event): 140 milliseconds
+2025-01-25 02:03:37.150 [info] Environments refresh paths discovered: 140 milliseconds
+2025-01-25 02:03:37.235 [info] Environments refresh finished (event): 225 milliseconds
+2025-01-25 02:03:37.245 [info] Environment refresh took 235 milliseconds
+2025-01-25 02:03:37.250 [info] Python interpreter path: /bin/python
+2025-01-25 02:03:40.285 [info] Starting Jedi language server for cunping507.
+2025-01-25 02:04:29.045 [info] Discover tests for workspace name: cunping507 - uri: /home/cunping507/prospect-prediction/diamondAI.py
