@@ -1,4 +1,0 @@
-injuries_prompt = f"""
-
-
-"""
