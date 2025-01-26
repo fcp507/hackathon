@@ -1,6 +1,6 @@
 from google.cloud import bigquery
 from vertexai.generative_models import FunctionDeclaration, GenerativeModel, Part, Tool
-from config import PROJECT_ID, BIGQUERY_DATASET_ID
+from config import PROJECT_ID, BIGQUERY_DATASET_ID, GOOGLE_API_KEY
 from utils.prompt import nl2sql_prompt
 
 # Initialize the Gemini Thinking model
@@ -34,13 +34,16 @@ def query_player_stats(prompt):
     api_response = str([dict(row) for row in api_response])
     api_response = api_response.replace("\\", "").replace("\n", "")
     print(api_response)
-    return_prompt = f"""Generate a natural language response based on the original question: '{user_question}' and the returned results: '{api_response}'"""
+    return_prompt = f"""Please provide a detailed summary and analysis of player's 2024 performance based on these stats: based on '{api_response}'
+    Highlight key metrics, such as ERA, strikeouts, walks, WHIP, and any other significant figures. Additionally, discuss his strengths and areas for improvement, 
+    and evaluate his potential impact on future games based on his current performance. Consider his consistency, durability, and any trends evident from the statistics provided."
+    """
     response = sqlGeneratorModel.generate_content(return_prompt)
     print(response.text)
     return response.text
 
 # Example usage
 if __name__ == "__main__":
-    user_question = "What are the stats for player John Doe?"
+    user_question = "What are the stats for player Jackson Jobe?"
     response = query_player_stats(user_question)
     print(response)

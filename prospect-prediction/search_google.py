@@ -1,18 +1,34 @@
-from vertexai.generative_models import GenerativeModel
-from config import PROJECT_ID, GOOGLE_MODEL_ID
+from google import genai
+from google.genai.types import Tool, GenerateContentConfig, GoogleSearch
+from config import PROJECT_ID, GOOGLE_MODEL_ID, GOOGLE_API_KEY
+from utils.prompt import sys_instruction
+from utils.help_function import get_player_names
 from typing import List
 import json
-from prompts import sys_instruction
+import re
+import io
+
+
+# Variables
+# Client initialization
+client = genai.Client(api_key=GOOGLE_API_KEY)
+
+# Configuration for generating content
+config = GenerateContentConfig(system_instruction=sys_instruction, tools=[Tool(google_search=GoogleSearch())], temperature=0)
+
+def clean_html(raw_html):
+    """Function to remove HTML tags from text."""
+    cleanr = re.compile('<.*?>')
+    cleantext = re.sub(cleanr, '', raw_html)
+    return cleantext
 
 def google_search_query(player_name: str):
     print("google_search_query", player_name)
-    prompt = f"Generate a scouting report for the minor league player {player_name} for the 2024 and 2023 season."
+    prompt = f"Generate a scouting report for the minor league player {player_name}."
 
     try:
-        # Initialize the Google Search tool
+        # If user selects web search, redefine the tool and generate response with web search
         google_search_tool = Tool(google_search=GoogleSearch())
-        
-        # Generate content stream
         response_stream = client.models.generate_content_stream(
             model=GOOGLE_MODEL_ID,
             contents=[prompt],
@@ -22,33 +38,29 @@ def google_search_query(player_name: str):
                 temperature=0
             ),
         )
-        
-        # Initialize a buffer to capture the response
+
         report = io.StringIO()
-        
-        # Iterate over the response stream
         for chunk in response_stream:
-            print(chunk)  # Debug: Print each chunk
             candidate = chunk.candidates[0]
             for part in candidate.content.parts:
                 if part.text:
-                    report.write(part.text)
+                    if m := re.search(r'(^|\n)-+\n(.*)$', part.text, re.M):
+                        report.write(m.group(2))
+                    elif report.tell():
+                        report.write(part.text)
                 else:
                     print(json.dumps(part.model_dump(exclude_none=True), indent=2))
-        
-        # Get the final scouting report from the buffer
+
         scouting_report = report.getvalue()
-        
         return scouting_report
+
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
 
+# Example usage
 if __name__ == "__main__":
-    player_name = "Paul Skenes"
-    search_results = google_search_query(player_name)
-    if search_results:
-        print("\nSearch Results:")
-        print(search_results)
-    else:
-        print("No results found.")
+    player_name = "Jackson Jobe"
+    scouting_report = google_search_query(player_name)
+    print("Scouting Report:")
+    print(scouting_report)

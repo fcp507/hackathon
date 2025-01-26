@@ -1,7 +1,8 @@
 langgraph
 langchain
 langchain-community
-langchain-google-vertexai 
+langchain-google-vertexai
+google-genai>=0.3.0
 langchain-core
 chainlit
 vertexai

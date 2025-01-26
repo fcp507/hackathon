@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamond AI</title>
+    <link rel="stylesheet" href="./static/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div id="content">
+            <h1>Diamond AI</h1>
+            <label for="player-dropdown">Player:</label>
+            <select id="player-dropdown">
+                <option value="">Select a player...</option>
+            </select>
+            <div class="headshot-container" id="headshot-container"></div>
+            <div class="stats-container">
+                <div id="response" class="stats-section"></div>
+                <div id="comparison-response" class="stats-section"></div>
+            </div>
+        </div>
+        <!-- Chatbot Iframe -->
+        <iframe id="chatbot-iframe" src="your-chatbot-url-here"></iframe>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            const dropdown = $('#player-dropdown');
+            const responseContainer = $('#response');
+            const comparisonResponse = $('#comparison-response');
+            const headshotContainer = $('#headshot-container');
+
+            async function fetchPlayers() {
+                try {
+                    const response = await fetch('/api/v1/players');
+                    if (!response.ok) throw new Error('Failed to fetch player names');
+                    const data = await response.json();
+                    if (Array.isArray(data.names)) {
+                        populateDropdown(data.names);
+                    } else {
+                        console.error('API response is not an array:', data.names);
+                    }
+                } catch (error) {
+                    console.error('Error fetching players:', error);
+                }
+            }
+
+            function populateDropdown(players) {
+                players.forEach(player => {
+                    const option = $('<option>').val(player).text(player);
+                    dropdown.append(option);
+                });
+            }
+
+            dropdown.change(function() {
+                const selectedPlayer = $(this).val();
+                if (selectedPlayer) {
+                    fetchPlayerData(selectedPlayer).then(() => {
+                        fetchPlayerDataAndCompare(selectedPlayer);
+                    });
+                }
+            });
+
+            async function fetchPlayerData(playerName) {
+                try {
+                    const response = await fetch(`/api/v1/player-stats/${encodeURIComponent(playerName)}`);
+                    if (!response.ok) throw new Error('Failed to fetch player data');
+
+                    const data = await response.json();
+                    displayPlayerData(data);
+                } catch (error) {
+                    responseContainer.html(`<strong>Error fetching player data: ${error.message}</strong>`);
+                }
+            }
+
+            function displayPlayerData(data) {
+                responseContainer.empty();
+                headshotContainer.empty();
+
+                if (data.stats && data.stats.length > 0) {
+                    const stats = data.stats[0];
+
+                    if (stats.headshot_url) {
+                        const img = $('<img>', {
+                            src: stats.headshot_url,
+                            alt: `${stats.Relinqiushed || 'Player'} Headshot`,
+                            class: 'player-headshot'
+                        });
+                        headshotContainer.append(img);
+                    }
+
+                    const statsTable = createStatsTable('Selected Player', stats);
+                    responseContainer.append(statsTable);
+                } else {
+                    responseContainer.append('<strong>No stats available for this player.</strong>');
+                }
+            }
+
+            async function fetchPlayerDataAndCompare(playerName) {
+                try {
+                    const response = await fetch(`/api/v1/compare-players/${encodeURIComponent(playerName)}`);
+                    if (!response.ok) throw new Error('Failed to fetch comparison data');
+
+                    const data = await response.json();
+                    displayComparison(data.result);
+                } catch (error) {
+                    comparisonResponse.html(`<strong>Error comparing players: ${error.message}</strong>`);
+                }
+            }
+
+            function displayComparison(data) {
+                comparisonResponse.empty();
+
+                if (data) {
+                    const comparisonTitle = $('<div>', { class: 'table-title' }).text('The Closest Major Team Player');
+                    const comparisonTable = createStatsTable(data.closest_major_player || 'Closest Match', data.closest_major_player_metrics);
+
+                    const similarityScore = $('<div>', { class: 'similarity-score' }).text(`Similarity Score: ${data.similarity_score.toFixed(4)}`);
+                    comparisonResponse.append(comparisonTitle).append(comparisonTable).append(similarityScore);
+                } else {
+                    comparisonResponse.append('<strong>No data available for comparison.</strong>');
+                }
+            }
+
+            function createStatsTable(playerName, metrics) {
+                const table = $('<table>', { class: 'stats-table' });
+                const headerRow = $('<tr>').append($('<th>').text('Metric'))
+                                           .append($('<th>').text(playerName));
+                table.append(headerRow);
+
+                const excludedMetrics = ['headshot_url', 'birthDate'];
+                Object.keys(metrics).forEach(metric => {
+                    if (!excludedMetrics.includes(metric)) {
+                        const row = $('<tr>').append($('<td>').text(metric))
+                                             .append($('<td>').text(metrics[metric] !== undefined ? metrics[metric] : 'N/A'));
+                        table.append(row);
+                    }
+                });
+
+                return table;
+            }
+
+            fetchPlayers();
+        });
+    </script>
+</body>
+</html>
