@@ -1,25 +1,4 @@
-.bash_history
-.cache/
-.codeoss/data/User/History/
-.codeoss/data/User/workspaceStorage/
-.codeoss/data/logs/
-.gitconfig
-.local/
-.npm/_logs/
-.rustup/
-.vscode/
-.npm/
-.cache/
-.codeoss/
-.config/
-.docker/
-.git/
-.gitconfig
-.local/
-.redhat/
-.rustup/
-.sudo_as_admin_successful
-.viminf# Exclude bash history file
+# Exclude bash history file
 .bash_history
 
 # Exclude cache directories
@@ -69,7 +48,8 @@ prospect-prediction/.chainlit/
 prospect-prediction/.chainlit/translations/
 
 # Exclude all files in any __pycache__ directory
+__pycache__/
 prospect-prediction/**/__pycache__/
 
 # Optionally, exclude all .pyc files globally
-*.pyco
+*.pyc

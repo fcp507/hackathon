@@ -93,6 +93,9 @@ Please include the following detailed stats and assessments:
  
 7. **WAR Prediction**:
    - Based on the collected data, predict the likelihood of the player being selected to major team.
+
+8. Overall Player Score:
+Provide an overall score for the player on a scale from 1 to 10, considering all the above metrics and assessments.
  
 Feel free to plan your work and discuss your approach, but when you start writing the report,
 put a line of dashes (---) to demarcate the report itself, and say nothing else after

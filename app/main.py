@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
-from services.bigquery_client import fetch_distinct_names, fetch_player_stats
+from services.bigquery_client import fetch_distinct_names, fetch_player_stats, war_prediction
 from services.player_comparision import compare_players
 from urllib.parse import unquote
 
@@ -67,6 +67,22 @@ def compare_players_api(playername):
     except Exception as e:
         logging.error(f"Error comparing players: {e}")
         return jsonify(error=str(e)), 500
+
+
+@app.route("/api/v1/player-prediction/<playername>", methods=["GET"])
+def players_prediction_api(playername):
+    if not playername:
+        return jsonify(error="Player name is required"), 400
+
+    try:
+        # Decode player name
+        result = war_prediction(playername)
+        return jsonify(result=result)
+
+    except Exception as e:
+        logging.error(f"Error comparing players: {e}")
+        return jsonify(error=str(e)), 500
+
 
 
 if __name__ == "__main__":

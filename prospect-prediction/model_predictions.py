@@ -46,4 +46,4 @@ def war_prediction(player_name):
 if __name__ == "__main__":
     player_name = "Alexander Cornielles"
     mode_result = war_prediction(player_name)
-    print(f"The mode(s) of the dataset is: {mode_result}")
+    print(f"The model of the dataset is: {mode_result}")
