@@ -8,7 +8,6 @@ import json
 import re
 import io
 
-
 # Variables
 # Client initialization
 client = genai.Client(api_key=GOOGLE_API_KEY)
@@ -44,14 +43,14 @@ def google_search_query(player_name: str):
             candidate = chunk.candidates[0]
             for part in candidate.content.parts:
                 if part.text:
-                    if m := re.search(r'(^|\n)-+\n(.*)$', part.text, re.M):
-                        report.write(m.group(2))
-                    elif report.tell():
-                        report.write(part.text)
+                    cleaned_text = clean_html(part.text)
+                    report.write(cleaned_text)
                 else:
                     print(json.dumps(part.model_dump(exclude_none=True), indent=2))
 
-        scouting_report = report.getvalue()
+        scouting_report = report.getvalue().strip()
+        if not scouting_report:
+            print("No content was generated in the scouting report.")
         return scouting_report
 
     except Exception as e:
@@ -62,5 +61,8 @@ def google_search_query(player_name: str):
 if __name__ == "__main__":
     player_name = "Jackson Jobe"
     scouting_report = google_search_query(player_name)
-    print("Scouting Report:")
-    print(scouting_report)
+    if scouting_report:
+        print("Scouting Report:")
+        print(scouting_report)
+    else:
+        print("Failed to generate scouting report.")

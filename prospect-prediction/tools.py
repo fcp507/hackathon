@@ -13,11 +13,8 @@ import re
 
 from utils.help_function import get_player_names
 
-# LLM_MODEL = 'gemini-1.5-flash'
-# llm = ChatVertexAI(model_name=LLM_MODEL, temperature=0)
-
 @tool
-def get_player_statistics(prompt: str) -> str:
+def stats_analyser(prompt: str) -> str:
     """Fetches player statistics based on the given prompt."""
     print("Fetching player statistics")
     player_stats = query_player_stats(prompt)
@@ -42,11 +39,12 @@ def injuries_analyser(prompt: str) -> str:
 def model_prediction(prompt: str) -> str:
     """Predict player picked probability"""
     print("model_prediction")
+    player_name = get_player_names(prompt)
     results = war_prediction(prompt)
     return results
 
 @tool
-def analyze_player_performance(prompt: str) -> str:
+def advanced_stats_analyser(prompt: str) -> str:
     """Analyzes player performance trends."""
     print("Analyzing player performance")
     player_name = get_player_names(prompt)
@@ -70,7 +68,7 @@ def normal_responder(qns: str) -> str:
     return llm_output.content
 
 @tool
-def player_comparison(prompt: str) -> str:
+def player_comparision(prompt: str) -> str:
     """Compares players based on the prompt."""
     print("player_comparison")
     results = compare_players(prompt)
@@ -79,5 +77,5 @@ def player_comparison(prompt: str) -> str:
 # Example usage
 if __name__ == "__main__":
     player_name = "Brett Phillips"
-    print(player_comparison(player_name))
+    print(model_prediction(player_name))
     # print(normal_responder("Who is the best MLB player currently?"))

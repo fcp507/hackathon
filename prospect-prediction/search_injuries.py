@@ -23,13 +23,12 @@ def query_player_injuries(prompt):
     Returns:
         str: A natural language response based on the query results.
     """
-    user_question = prompt
+    user_question = f"What are the injury history for player {prompt}"
     revised_prompt = (
         f"Use these System Instructions: {injuries_prompt} "
         f"to answer the provided Question about {user_question}"
     )
     
-    print(revised_prompt)
     
     generated_query = sql_generator_model.generate_content(revised_prompt)
     print(generated_query.text)
@@ -48,6 +47,9 @@ def query_player_injuries(prompt):
     
     query_job = client.query(cleaned_query, job_config=job_config)
     api_response = query_job.result()
+
+    if not api_response_list:
+        return "No injuries found"
     
     # Convert API response to a string representation
     api_response = str([dict(row) for row in api_response])
@@ -56,7 +58,7 @@ def query_player_injuries(prompt):
     print(api_response)
     
     return_prompt = (
-        f"""Please provide a detailed summary and analysis of minor mlb player '{user_question}' injury history and discuss how these injuries might impact his future performance and career prospects. 
+        f"""Please provide a detailed summary and analysis of minor player '{user_question}' injury history and discuss how these injuries might impact his future performance and career prospects. 
         Highlight key aspects such as the type and frequency of injuries based on '{api_response}'"""
     )
     

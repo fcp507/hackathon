@@ -1,4 +1,3 @@
-
 #response {
     margin-top: 20px;
 }
@@ -28,6 +27,34 @@ body {
     max-width: 1400px;
     margin: 0 auto;
 }
+
+
+.stats-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.stats-section {
+    flex: 1;
+    padding: 20px;
+    min-width: 300px; /* Ensure minimum width for each column */
+}
+
+#player-stats {
+    border-right: 1px solid #ccc; /* Optional: visual separation */
+}
+
+#comparison-and-injuries {
+    border-left: 1px solid #ccc; /* Optional: visual separation */
+    
+}
+
+#comparison-and-injuries > div {
+    margin-bottom: 30px; /* Add space between tables */
+}
+
+
 #content {
     flex: 0 0 66%; /* Takes two-thirds of the page */
     background-color: #fff;
@@ -42,7 +69,8 @@ body {
     height: 900px; /* Increased height */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 100px; /* Additional margin to position it lower */
+    margin-top: 20px; /* Additional margin to position it lower */
+    margin-bottom: 20px; /* Additional margin to position it lower */
 }
 h1 {
     text-align: center;
@@ -104,7 +132,8 @@ select {
 }
 .similarity-score {
     text-align: center;
-    font-size: 1.2em;
+    font-size: 0.8em;
     margin-top: 10px;
-    color: #333;
+    color: #33333324;
 }
+
