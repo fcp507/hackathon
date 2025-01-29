@@ -38,7 +38,7 @@ def injuries_analyser(prompt: str) -> str:
 @tool
 def model_prediction(prompt: str) -> str:
     """Predict player picked probability"""
-    print("model_prediction")
+    print(prompt)
     player_name = get_player_names(prompt)
     results = war_prediction(prompt)
     return results
@@ -76,6 +76,6 @@ def player_comparision(prompt: str) -> str:
 
 # Example usage
 if __name__ == "__main__":
-    player_name = "Brett Phillips"
+    player_name = "Jaden Hill"
     print(model_prediction(player_name))
     # print(normal_responder("Who is the best MLB player currently?"))

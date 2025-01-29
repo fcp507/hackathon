@@ -44,6 +44,6 @@ def query_player_stats(prompt):
 
 # Example usage
 if __name__ == "__main__":
-    user_question = "What are the stats for player Jackson Jobe?"
+    user_question = "Tell me more about Jackson Jobe?"
     response = query_player_stats(user_question)
     print(response)

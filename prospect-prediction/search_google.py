@@ -23,7 +23,57 @@ def clean_html(raw_html):
 
 def google_search_query(player_name: str):
     print("google_search_query", player_name)
-    prompt = f"Generate a scouting report for the minor league player {player_name}."
+    prompt = f""" Generate a scouting report for the minor league player {player_name}.
+    Please include the following detailed stats and assessments:
+1. **Physical Attributes**:
+   - Height
+   - Weight
+   - Age
+ 
+2. **Qualitative Assessments of Physical Skills**:
+   - Arm Strength
+   - Speed
+   - Fielding Ability
+ 
+3. **Tools Ratings**:
+   - Hit Tool
+   - Power
+   - Run
+   - Arm
+   - Field
+   - Ratings should be on a standard 20-80 scale
+ 
+4. **Advanced Metrics**:
+   - **Statcast Data**:
+     - Exit Velocity: Speed of the ball off the bat
+     - Launch Angle: Angle at which the ball leaves the bat
+     - Spin Rate: Rotation rate of pitched balls
+     - Sprint Speed: Measures running speed
+ 
+   - **Plate Discipline Metrics**:
+     - Walk Rate (BB%): Percentage of plate appearances resulting in walks
+     - Strikeout Rate (K%): Percentage of plate appearances resulting in strikeouts
+     - Chase Rate: Frequency of swings at pitches outside the strike zone
+ 
+5. **Comparative Rankings**:
+   - **Prospect Rankings**:
+     - Rankings among other prospects
+   - **Historical Rankings**:
+     - Year-over-year changes in prospect status
+   - **Peer Comparisons**:
+     - Evaluations relative to other prospects in the same cohort
+ 
+6. **Additional Context**:
+   - Recent performance trends
+   - Notable achievements or highlights from the 2023 and 2024 season
+   - Comparisons to other players or historical data where relevant
+   - Potential for future development and projections
+ 
+7. **Likelihood of Major League Selection**:
+   - Based on the collected data, predict the likelihood of the player being selected to major team.
+   - Overall Player Score:
+   Provide an overall score for the player on a scale from 1 to 10, considering all the above metrics and assessments.
+ """
 
     try:
         # If user selects web search, redefine the tool and generate response with web search
@@ -59,7 +109,7 @@ def google_search_query(player_name: str):
 
 # Example usage
 if __name__ == "__main__":
-    player_name = "Jackson Jobe"
+    player_name = "Jaden Hill"
     scouting_report = google_search_query(player_name)
     if scouting_report:
         print("Scouting Report:")
