@@ -20,6 +20,14 @@ from tools import (
     player_comparision
 )
 
+import os
+from pathlib import Path
+
+# Set up a writable directory
+FILES_DIRECTORY = Path("/tmp/.files")
+FILES_DIRECTORY.mkdir(exist_ok=True)
+
+
 # --- Configuration and Constants ---
 LLM_MODEL = 'gemini-2.0-flash-exp'
 AGENT_PROMPT = """
