@@ -20,10 +20,18 @@ from tools import (
     player_comparision
 )
 
+import os
+from pathlib import Path
+
+# Set up a writable directory
+FILES_DIRECTORY = Path("/tmp/.files")
+FILES_DIRECTORY.mkdir(exist_ok=True)
+
+
 # --- Configuration and Constants ---
 LLM_MODEL = 'gemini-2.0-flash-exp'
 AGENT_PROMPT = """
-You are a professional MLB prospect prediction agent. You have access to historical stats data, injury data, scouting report,
+You are a professional MLB prospect prediction agent. You have access to historical stats data, injury data, scouting reports,
 and advanced prediction models to assess the potential success of MLB prospects. You are NOT an LLM or AI chatbot.
 Help to execute the task that you are assigned to, and return the response in a clear and concise manner.
 The user is interested in predicting the success of prospects based on available data.
@@ -61,7 +69,10 @@ class Act(BaseModel):
 
 # --- Prompts ---
 PLANNER_PROMPT = ChatPromptTemplate.from_messages([
-    ("system", rf"""You are a professional MLB prospect prediction agent. Your role is to deliver a thorough analysis of MLB prospects based on available data, focusing on strengths and potential. Follow these guidelines:
+    ("system", rf"""You are a professional MLB prospect prediction agent.
+    Your role is to deliver a thorough analysis of MLB prospects based on available data,
+    focusing on strengths and potential. Follow these guidelines:
+    
     - **Objective Understanding**: Interpret the user's inquiry accurately to form a relevant response.
     - **Plan Creation**: Develop a logical plan with distinct steps, using the appropriate tools for each task:
     - **Player Data**: Utilize {stats_analyser} for retrieving player statistics.
@@ -72,7 +83,10 @@ PLANNER_PROMPT = ChatPromptTemplate.from_messages([
     - **General Queries**: Use {normal_responder} for non-specific MLB questions.
     - **Handling Missing Injury Data**: If injury history data is not available, interpret this as a positive indicator that there are no major recorded injuries, suggesting a potentially good future for the player. Highlight other strengths and metrics such as WAR to complement this positive outlook.
     - **Presentation of Basic Stats**: When providing basic statistical outputs, format them into a table for clarity. Include key metrics such as batting average, ERA, WAR, etc., to present a clear and concise statistical overview.
-    - **Prediction of Selection Probability**: Combine all available data, including performance metrics, comparisons, and qualitative insights, to provide an informed prediction of the player's probability of being picked for MLB. Even if exact probabilities cannot be calculated, provide a qualitative assessment based on available data.
+    - **Prediction of Selection Probability**: Combine all available data, including performance metrics, comparisons,
+    and qualitative insights, to provide an informed prediction of the player's probability of being picked for MLB.
+    Even if exact probabilities cannot be calculated, provide a qualitative assessment based on available data.
+    
     - **Example**:
     - **Question**: Predict the future performance of Shohei Ohtani.
     - **Plan**:
@@ -82,9 +96,12 @@ PLANNER_PROMPT = ChatPromptTemplate.from_messages([
         4. Compare with similar players using {player_comparision}.
         5. Predict selection probability using {model_prediction}, incorporating insights from all previous steps.
         6. Synthesize insights for a comprehensive prediction, focusing on strengths and available data.
-    Ensure that each step contributes towards a well-rounded analysis. The final output should be clear, informative, and positive, emphasizing the potential and strengths of the prospect."""),
+        7. Provide an overall score for the player on a scale from 1 to 10, considering all the above metrics and assessments.
+    Ensure that each step contributes towards a well-rounded analysis. The final output should be clear, informative, 
+    and positive, emphasizing the potential and strengths of the prospect."""), 
     ("placeholder", "{messages}"),
 ])
+
 
 REPLANNER_PROMPT = ChatPromptTemplate.from_template(
     """Create a step-by-step plan for the given objective.
@@ -198,3 +215,4 @@ async def main(message: cl.Message):
             pass
         elif "past_steps" in event:
             pass
+

@@ -121,5 +121,5 @@ def compare_players(prompt: str) -> str:
 
 # Example usage in main
 if __name__ == "__main__":
-    prompt = "Alexander Cornielles"
+    prompt = "Jaden Hill"
     print(compare_players.invoke(prompt))  # Use invoke instead of __call__

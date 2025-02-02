@@ -28,7 +28,8 @@ def stats_analyser(prompt: str) -> str:
 def injuries_analyser(prompt: str) -> str:
     """Fetches player injury history based on the given prompt."""
     print("Fetching player injury history")
-    injuries = query_player_injuries(prompt)
+    player_name = get_player_names(prompt)[0]
+    injuries = query_player_injuries(player_name)
 
     if not injuries:
         return "No Injuries found for the given player."
@@ -38,10 +39,13 @@ def injuries_analyser(prompt: str) -> str:
 @tool
 def model_prediction(prompt: str) -> str:
     """Predict player picked probability"""
-    print("model_prediction")
-    player_name = get_player_names(prompt)
-    results = war_prediction(prompt)
-    return results
+    player_name = get_player_names(prompt)[0]
+    print(player_name)
+    results = war_prediction(player_name)
+    if results < 0.5:
+        return "Model Prediction : Major league pick probability is low"
+    else:
+        return "Model Prediction : Major league pick probability is high"
 
 @tool
 def advanced_stats_analyser(prompt: str) -> str:
@@ -76,6 +80,6 @@ def player_comparision(prompt: str) -> str:
 
 # Example usage
 if __name__ == "__main__":
-    player_name = "Brett Phillips"
+    player_name = "Tell me more about Jaden Hill"
     print(model_prediction(player_name))
     # print(normal_responder("Who is the best MLB player currently?"))
