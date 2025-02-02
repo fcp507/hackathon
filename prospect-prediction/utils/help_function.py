@@ -4,10 +4,8 @@ from langchain.prompts import PromptTemplate
 from langchain_google_vertexai import ChatVertexAI
 from langchain.schema import AIMessage
 
-
 LLM_MODEL = 'gemini-1.5-flash'
 llm = ChatVertexAI(model_name=LLM_MODEL, temperature=0)
-
 
 def get_player_names(prompt: str) -> list:
     """Uses LLM to extract player names from the given text."""

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
-from app.services.bigquery_client import fetch_distinct_names, fetch_player_stats, war_prediction
-from app.services.player_comparision import compare_players
+from services.bigquery_client import fetch_distinct_names, fetch_player_stats, war_prediction
+from services.player_comparision import compare_players
 from urllib.parse import unquote
 
 import logging

@@ -3,10 +3,10 @@
 FROM python:3.12-slim
 
 # Set the working directory to /app
-WORKDIR /chat
+WORKDIR /app
 
 # Copy the current directory contents into the container at /app
-COPY . /chat
+COPY . /app
 
 
 # Install system dependencies
@@ -21,7 +21,7 @@ RUN pip install --upgrade pip
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Make port 8080 available to the world outside this container
+# Make port 8000 available to the world outside this container
 EXPOSE 8080
 
 # Set environment variable for the port
@@ -31,4 +31,4 @@ ENV PORT 8080
 ENV GOOGLE_CLOUD_PROJECT hackathon-448821
 
 # Run chainlit when the container launches
-CMD ["chainlit", "run", "diamondai.py", "--port", "8080", "--host", "0.0.0.0"]
+CMD ["python", "main.py"]

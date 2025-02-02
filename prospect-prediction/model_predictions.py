@@ -24,6 +24,8 @@ def war_prediction(player_name):
     )
     """
     # Execute the query
+
+    print(query)
     query_job = client.query(query)
     
     # Convert the result to a pandas DataFrame
