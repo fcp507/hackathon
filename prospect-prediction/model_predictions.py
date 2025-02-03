@@ -38,7 +38,11 @@ def war_prediction(player_name):
             predicted_probs = df['predicted_Flg_probs'].iloc[0]
             for prob in predicted_probs:
                 if prob['label'] == 1:
-                    return f"Model prediction is: {prob['prob']}"
+                    if prob['prob'] < 0.5:
+                        return "Model Prediction : Major league pick probability is low"
+                    else:
+                        return "Model Prediction : Major league pick probability is high"
+
             raise KeyError("Probability for label '1' not found in the prediction results.")
         else:
             raise KeyError("Column 'predicted_Flg_probs' not found in the prediction results.")
@@ -46,6 +50,6 @@ def war_prediction(player_name):
         return None
 
 if __name__ == "__main__":
-    player_name = "Jaden Hill"
+    player_name = "Thomas White"
     mode_result = war_prediction(player_name)
     print(f"The model of the dataset is: {mode_result}")

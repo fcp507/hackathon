@@ -175,5 +175,5 @@ Average_DL_Length | FLOAT | Average length of disabled list stays
  
 SELECT * 
 FROM `hackathon-448821.mlb.milb_testing_data` 
-WHERE player_name = 'John Doe'; 
+WHERE Relinquished  = 'John Doe'; 
 """
