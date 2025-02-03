@@ -42,10 +42,7 @@ def model_prediction(prompt: str) -> str:
     player_name = get_player_names(prompt)[0]
     print(player_name)
     results = war_prediction(player_name)
-    if results < 0.5:
-        return "Model Prediction : Major league pick probability is low"
-    else:
-        return "Model Prediction : Major league pick probability is high"
+    return results
 
 @tool
 def advanced_stats_analyser(prompt: str) -> str:

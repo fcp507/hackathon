@@ -45,7 +45,7 @@
 prospect-prediction/.chainlit/
 
 # Exclude all files in the .chainlit/translations directory
-prospect-prediction/.chainlit/translations/
+!prospect-prediction/.chainlit/translations/
 
 # Exclude all files in any __pycache__ directory
 __pycache__/

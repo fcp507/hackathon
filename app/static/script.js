@@ -104,8 +104,13 @@ $(document).ready(function() {
 
 
             const newInjuriesHeader = $('<div>', { class: 'table-title' }).text('Injuries For Last 5 Years');
-            const newInjuries = data.new_injuries ? data.new_injuries[0] : {};
-            const newInjuriesTable = createNewInjuriesTable('Injuries', newInjuries);
+           //const newInjuries = data.new_injuries ? data.new_injuries[0] : {};
+           const newInjuries = {
+            Injury_Count: stats.Injury_Count || 0,
+            Total_DL_Length: stats.Total_DL_Length || 0
+            };
+        
+           const newInjuriesTable = createNewInjuriesTable('Injuries', newInjuries);
             newResponseContainer.append(newInjuriesHeader).append(newInjuriesTable);
 
         } else {
@@ -185,14 +190,46 @@ $(document).ready(function() {
             "BB_SO", "PI_PA", "HR_PA", "BB_PA", "PI_IP"
         ];
 
+        const sportIdMappings = {
+            11: "AAA",
+            12: "AA",
+            13: "A+",
+            14: "A"
+        };
+        
+        function mapMetricValue(metric, value) {
+            // Specific handling for Sport_id
+            if (metric === "Sport_id") {
+                return sportIdMappings[value] || value;
+            }
+            // General mapping for other metrics
+            if (typeof value === 'string') {
+                const parts = value.split(' ');
+                if (parts.length === 2 && metricMappings.hasOwnProperty(parts[1])) {
+                    return `${parts[0]} ${metricMappings[parts[1]]}`;
+                }
+            }
+            return value;
+        }
+
         orderedMetrics.forEach(metric => {
             if (metrics.hasOwnProperty(metric)) {
+                const mappedValue = mapMetricValue(metric, metrics[metric]);
                 const row = $('<tr>')
                     .append($('<td>').text(metric))
-                    .append($('<td>').text(metrics[metric]));
+                    .append($('<td>').text(mappedValue));
                 table.append(row);
             }
         });
+
+        // orderedMetrics.forEach(metric => {
+        //     if (metrics.hasOwnProperty(metric)) {
+        //         const row = $('<tr>')
+        //             .append($('<td>').text(metric))
+        //             .append($('<td>').text(metrics[metric]));
+        //         table.append(row);
+        //     }
+        // });
 
         return table;
     }
